@@ -1,0 +1,58 @@
+# Sample data: dictionary with member names and number of books borrowed
+borrow_records = {
+    'Sujay': 3,
+    'Vinay': 0,
+    'Parth': 5,
+    'Sanjay': 2,
+    'Mohit': 0,
+    'Gautam': 5,
+    'Rohan': 1
+}
+
+# 1. Compute average number of books borrowed
+def compute_average(records):
+    total = sum(records.values())
+    count = len(records)
+    return total / count
+
+# 2. Find highest and lowest borrowings (excluding 0 for min)
+def find_max_min(records):
+    non_zero_values = [val for val in records.values() if val > 0]
+    max_borrow = max(records.values())      # Include all for max
+    min_borrow = min(non_zero_values)       # Exclude 0 for min
+    return max_borrow, min_borrow
+
+# 3. Count members who have not borrowed any books
+def count_zero_borrowers(records):
+    return list(records.values()).count(0)
+
+# 4. Most frequently borrowed book count (mode), excluding 0
+def find_mode(records):
+    non_zero_values = [val for val in records.values() if val > 0]
+    if not non_zero_values:
+        return None
+    freq = {}
+    for val in non_zero_values:
+        freq[val] = freq.get(val, 0) + 1
+    mode_value = max(freq, key=freq.get)
+    return mode_value
+
+# ---- Execution ----
+average = compute_average(borrow_records)
+max_borrow, min_borrow = find_max_min(borrow_records)
+zero_count = count_zero_borrowers(borrow_records)
+mode_borrow = find_mode(borrow_records)
+
+print("Average number of books borrowed:", average)
+print("Highest borrow count:", max_borrow)
+print("Lowest borrow count (excluding 0):", min_borrow)
+print("Number of members with 0 borrowings:", zero_count)
+print("Most frequently borrowed book count (mode):", mode_borrow)
+
+
+Output:-
+Average number of books borrowed: 2.2857142857142856
+Highest borrow count: 5
+Lowest borrow count (excluding 0): 1
+Number of members with 0 borrowings: 2
+Most frequently borrowed book count (mode): 5
