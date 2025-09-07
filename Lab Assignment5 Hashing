@@ -1,0 +1,94 @@
+# Hash Table implementation with Chaining
+
+class HashTable:
+    def __init__(self, size=10):
+        self.size = size
+        self.table = [[] for _ in range(size)]  # each index has a list (chain)
+
+    # Hash function: Division Method
+    def hash_function(self, key):
+        return key % self.size
+
+    # Insert key-value pair
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        # check if key already exists -> update
+        for i, (k, v) in enumerate(self.table[index]):
+            if k == key:
+                self.table[index][i] = (key, value)
+                return
+        # otherwise, append new pair
+        self.table[index].append((key, value))
+
+    # Search value by key
+    def search(self, key):
+        index = self.hash_function(key)
+        for k, v in self.table[index]:
+            if k == key:
+                return v
+        return None  # not found
+
+    # Delete key-value pair
+    def delete(self, key):
+        index = self.hash_function(key)
+        for i, (k, v) in enumerate(self.table[index]):
+            if k == key:
+                del self.table[index][i]
+                return True
+        return False  # key not found
+
+    # Display the hash table
+    def display(self):
+        for i in range(self.size):
+            print(f"Bucket {i}:", self.table[i])
+
+
+# ---- Example Usage ----
+ht = HashTable()
+
+# Insert keys
+ht.insert(10, "Apple")
+ht.insert(20, "Banana")
+ht.insert(25, "Orange")   # collision with 20 (both go to index 0)
+ht.insert(15, "Grapes")
+
+print("\nInitial Hash Table:")
+ht.display()
+
+# Search
+print("\nSearch Key 25:", ht.search(25))
+print("Search Key 99:", ht.search(99))
+
+# Delete
+ht.delete(20)
+print("\nAfter deleting key 20:")
+ht.display()
+
+
+Output:-
+Initial Hash Table:
+Bucket 0: [(10, 'Apple'), (20, 'Banana')]
+Bucket 1: []
+Bucket 2: []
+Bucket 3: []
+Bucket 4: []
+Bucket 5: [(25, 'Orange'), (15, 'Grapes')]
+Bucket 6: []
+Bucket 7: []
+Bucket 8: []
+Bucket 9: []
+
+Search Key 25: Orange
+Search Key 99: None
+
+After deleting key 20:
+Bucket 0: [(10, 'Apple')]
+Bucket 1: []
+Bucket 2: []
+Bucket 3: []
+Bucket 4: []
+Bucket 5: [(25, 'Orange'), (15, 'Grapes')]
+Bucket 6: []
+Bucket 7: []
+Bucket 8: []
+Bucket 9: []
