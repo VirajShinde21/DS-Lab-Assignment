@@ -1,0 +1,52 @@
+# Undo/Redo Text Editor using Stacks
+
+undo_stack = []
+redo_stack = []
+document = ""   # current text
+
+
+def make_change(new_text):
+    global document
+    undo_stack.append(document)
+    redo_stack.clear()
+    document = new_text
+    print(f"Change Made: '{document}'")
+
+
+def undo():
+    global document
+    if undo_stack:
+        redo_stack.append(document)
+        document = undo_stack.pop()
+        print(f"Undo Performed → Document: '{document}'")
+    else:
+        print("Nothing to undo!")
+
+
+def redo():
+    global document
+    if redo_stack:
+        undo_stack.append(document)
+        document = redo_stack.pop()
+        print(f"Redo Performed → Document: '{document}'")
+    else:
+        print("Nothing to redo!")
+
+
+# ---- Example Run ----
+make_change("Hello")
+make_change("Hello World")
+make_change("Hello World!!!")
+
+undo()
+undo()
+
+redo()
+
+Output:-
+Change Made: 'Hello'
+Change Made: 'Hello World'
+Change Made: 'Hello World!!!'
+Undo Performed → Document: 'Hello World'
+Undo Performed → Document: 'Hello'
+Redo Performed → Document: 'Hello World'
